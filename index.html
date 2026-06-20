@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Relevamiento · Sitio Web Profesional</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --purple-50: #EEEDFE;
+    --purple-200: #AFA9EC;
+    --purple-500: #534AB7;
+    --purple-700: #3C3489;
+    --purple-900: #26215C;
+    --coral-400: #D85A30;
+    --green-50: #EAF3DE;
+    --green-600: #3B6D11;
+    --green-800: #27500A;
+    --gray-100: #f5f5f4;
+    --gray-200: #e7e5e4;
+    --gray-400: #a8a29e;
+    --gray-700: #44403c;
+    --gray-900: #1c1917;
+    --white: #ffffff;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--gray-100);
+    color: var(--gray-900);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 660px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .form-header {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border-top: 5px solid var(--purple-500);
+    padding: 2rem;
+    margin-bottom: 1.25rem;
+    border: 0.5px solid var(--gray-200);
+    border-top: 5px solid var(--purple-500);
+  }
+  .form-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+  }
+  .form-header p {
+    font-size: 14px;
+    color: var(--gray-700);
+  }
+  .req-note {
+    font-size: 12px;
+    color: var(--coral-400);
+    margin-top: 10px;
+  }
+
+  /* Secciones */
+  .section {
+    background: var(--white);
+    border: 0.5px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple-500);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .section-title svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--purple-500);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* Fields */
+  .field { margin-bottom: 1.25rem; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-900);
+    margin-bottom: 5px;
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-bottom: 7px;
+  }
+  .req { color: var(--coral-400); margin-left: 2px; }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    font-size: 14px;
+    font-family: inherit;
+    padding: 9px 13px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    color: var(--gray-900);
+    outline: none;
+    transition: border-color .15s, background .15s;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--purple-500);
+    background: var(--white);
+    box-shadow: 0 0 0 3px var(--purple-50);
+  }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+  /* Radio / checkbox */
+  .choice-group { display: flex; flex-direction: column; gap: 7px; }
+  .choice-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--gray-900);
+    background: var(--gray-100);
+    transition: border-color .15s, background .15s;
+    user-select: none;
+  }
+  .choice-item:hover { border-color: var(--purple-200); background: var(--purple-50); }
+  .choice-item input { accent-color: var(--purple-500); width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+  .choice-item.selected { border-color: var(--purple-500); background: var(--purple-50); color: var(--purple-700); font-weight: 500; }
+
+  /* Escala */
+  .scale-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .scale-btn {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .scale-btn:hover { border-color: var(--purple-200); background: var(--purple-50); }
+  .scale-btn.active { background: var(--purple-500); color: var(--white); border-color: var(--purple-500); font-weight: 600; }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-400); margin-top: 5px; }
+
+  /* Char count */
+  .char-count { font-size: 11px; color: var(--gray-400); text-align: right; margin-top: 3px; }
+
+  /* Botón enviar */
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--purple-500);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+    margin-top: .5rem;
+    letter-spacing: .02em;
+  }
+  .btn-submit:hover { background: var(--purple-700); }
+  .btn-submit:active { transform: scale(0.99); }
+  .btn-submit:disabled { opacity: .5; cursor: default; }
+
+  /* Mensaje de éxito */
+  .success-msg {
+    display: none;
+    background: var(--green-50);
+    border: 1px solid #a3c97a;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 1.25rem;
+  }
+  .success-msg .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  .success-msg h2 { color: var(--green-600); font-size: 18px; margin-bottom: 6px; }
+  .success-msg p { color: var(--green-800); font-size: 14px; }
+
+  /* Separador */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--gray-200);
+    margin: 1.1rem 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 520px) {
+    body { padding: 1rem .75rem 3rem; }
+    .form-header, .section { padding: 1.25rem 1rem; }
+    .scale-btn { width: 38px; height: 38px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="form-header">
+    <h1>Formulario de relevamiento · Sitio web profesional</h1>
+    <p>Este formulario me ayuda a entender tu visión para crear un sitio que refleje tu identidad y objetivos como profesional. No lleva más de 10 minutos.</p>
+    <p class="req-note">* Campos obligatorios</p>
+  </div>
+
+  <!-- SECCIÓN 1 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Sobre vos
+    </div>
+
+    <div class="field">
+      <label for="nombre">Nombre completo <span class="req">*</span></label>
+      <input type="text" id="nombre" placeholder="Ej: Dra. Laura Martínez">
+    </div>
+
+    <div class="field">
+      <label for="especialidad">Especialidad o área del derecho <span class="req">*</span></label>
+      <input type="text" id="especialidad" placeholder="Ej: Derecho de familia, laboral, penal...">
+    </div>
+
+    <div class="field">
+      <label for="email">Email de contacto <span class="req">*</span></label>
+      <input type="email" id="email" placeholder="tu@email.com">
+    </div>
+
+    <div class="field">
+      <label for="ciudad">Ciudad / zona donde ejercés</label>
+      <input type="text" id="ciudad" placeholder="Ej: Buenos Aires, Rosario...">
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Objetivo del sitio
+    </div>
+
+    <div class="field">
+      <label>¿Para qué querés crear este sitio? <span class="req">*</span></label>
+      <div class="hint">Podés elegir más de una opción</div>
+      <div class="choice-group" id="objetivo">
+        <label class="choice-item"><input type="checkbox" value="captar"> Captar nuevos clientes</label>
+        <label class="choice-item"><input type="checkbox" value="presencia"> Tener presencia online profesional</label>
+        <label class="choice-item"><input type="checkbox" value="info"> Informar sobre mis servicios</label>
+        <label class="choice-item"><input type="checkbox" value="contacto"> Facilitar el contacto con clientes actuales</label>
+        <label class="choice-item"><input type="checkbox" value="otro"> Otro</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label for="cliente">¿A qué tipo de cliente querés llegar?</label>
+      <div class="hint">Describí a tu cliente ideal: edad, situación, necesidad</div>
+      <textarea id="cliente" placeholder="Ej: Personas físicas con conflictos laborales, empresas medianas que necesiten asesoría, familias en procesos de divorcio..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="14.5" r="2.5"/><circle cx="8.5" cy="14.5" r="2.5"/><line x1="11" y1="8" x2="9.5" y2="12"/><line x1="16" y1="8" x2="13.5" y2="12"/><line x1="11" y1="16" x2="14.5" y2="16"/></svg>
+      Identidad visual
+    </div>
+
+    <div class="field">
+      <label>¿Contás con logo? <span class="req">*</span></label>
+      <div class="choice-group" id="logo">
+        <label class="choice-item"><input type="radio" name="logo" value="si"> Sí, tengo logo listo para usar</label>
+        <label class="choice-item"><input type="radio" name="logo" value="proceso"> Lo estoy desarrollando</label>
+        <label class="choice-item"><input type="radio" name="logo" value="no"> No tengo, necesitaría uno</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label>¿Tenés colores o estilo visual definido?</label>
+      <div class="choice-group" id="identidad">
+        <label class="choice-item"><input type="radio" name="identidad" value="si"> Sí, tengo una identidad visual definida</label>
+        <label class="choice-item"><input type="radio" name="identidad" value="parcial"> Tengo referencias pero no está formalizada</label>
+        <label class="choice-item"><input type="radio" name="identidad" value="no"> No, me guiaría por lo que proponga el diseñador</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label>¿Qué estilo visual te representa mejor?</label>
+      <div class="choice-group" id="estilo">
+        <label class="choice-item"><input type="checkbox" value="minimalista"> Minimalista y formal</label>
+        <label class="choice-item"><input type="checkbox" value="moderno"> Moderno y tecnológico</label>
+        <label class="choice-item"><input type="checkbox" value="clasico"> Clásico y elegante</label>
+        <label class="choice-item"><input type="checkbox" value="cercano"> Cercano y humano</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label for="referencia">¿Tenés algún sitio web que te guste como referencia?</label>
+      <div class="hint">No tiene que ser de abogados. Podés poner el link o describir qué te gustó</div>
+      <textarea id="referencia" placeholder="Ej: Me gusta el sitio tal.com porque es limpio y transmite confianza..." style="min-height: 64px;"></textarea>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      Contenido y secciones
+    </div>
+
+    <div class="field">
+      <label>¿Qué secciones debe tener tu sitio? <span class="req">*</span></label>
+      <div class="choice-group" id="secciones">
+        <label class="choice-item"><input type="checkbox" value="inicio"> Inicio / presentación</label>
+        <label class="choice-item"><input type="checkbox" value="servicios"> Servicios / áreas de práctica</label>
+        <label class="choice-item"><input type="checkbox" value="sobremi"> Sobre mí / trayectoria</label>
+        <label class="choice-item"><input type="checkbox" value="blog"> Blog o artículos de interés</label>
+        <label class="choice-item"><input type="checkbox" value="turnos"> Solicitud de turnos / consultas online</label>
+        <label class="choice-item"><input type="checkbox" value="faq"> Preguntas frecuentes</label>
+        <label class="choice-item"><input type="checkbox" value="testimonios"> Testimonios de clientes</label>
+        <label class="choice-item"><input type="checkbox" value="contacto"> Contacto</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label>¿Querés que los clientes puedan agendar una consulta desde el sitio?</label>
+      <div class="choice-group" id="agenda">
+        <label class="choice-item"><input type="radio" name="agenda" value="si"> Sí, me interesa mucho</label>
+        <label class="choice-item"><input type="radio" name="agenda" value="evaluar"> Podría evaluarlo</label>
+        <label class="choice-item"><input type="radio" name="agenda" value="no"> No, prefiero otro medio de contacto</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Alcance y expectativas
+    </div>
+
+    <div class="field">
+      <label>¿En qué zona geográfica querés tener alcance?</label>
+      <div class="choice-group" id="alcance">
+        <label class="choice-item"><input type="radio" name="alcance" value="local"> Local / ciudad</label>
+        <label class="choice-item"><input type="radio" name="alcance" value="regional"> Regional / provincial</label>
+        <label class="choice-item"><input type="radio" name="alcance" value="nacional"> Nacional</label>
+        <label class="choice-item"><input type="radio" name="alcance" value="internacional"> Internacional</label>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label>Del 1 al 5, ¿qué tan importante es aparecer en Google? <span class="req">*</span></label>
+      <div class="hint">1 = no es prioridad · 5 = es fundamental</div>
+      <div class="scale-wrap" id="seo-scale"></div>
+      <div class="scale-labels"><span>No es prioridad</span><span>Fundamental</span></div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label for="redes">¿Tenés redes sociales que quieras vincular?</label>
+      <input type="text" id="redes" placeholder="Ej: @abogada.laura en Instagram, LinkedIn, WhatsApp...">
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label>¿Contás con dominio o hosting propio?</label>
+      <div class="choice-group" id="dominio">
+        <label class="choice-item"><input type="radio" name="dominio" value="si"> Sí, ya tengo</label>
+        <label class="choice-item"><input type="radio" name="dominio" value="no"> No, necesito orientación</label>
+        <label class="choice-item"><input type="radio" name="dominio" value="nosabe"> No sé bien de qué se trata</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 6 -->
+  <div class="section">
+    <div class="section-title">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Comentarios libres
+    </div>
+
+    <div class="field">
+      <label for="comentarios">¿Hay algo más que quieras contarme?</label>
+      <div class="hint">Cualquier idea, preocupación o detalle que quieras que tenga en cuenta</div>
+      <textarea id="comentarios" style="min-height: 110px;" placeholder="Contame lo que quieras..." oninput="document.getElementById('cc').textContent = this.value.length + ' caracteres'"></textarea>
+      <div class="char-count" id="cc">0 caracteres</div>
+    </div>
+  </div>
+
+  <button class="btn-submit" id="btn-enviar" onclick="enviar()">Enviar formulario</button>
+
+  <div class="success-msg" id="success">
+    <div class="icon">✅</div>
+    <h2>¡Respuestas enviadas!</h2>
+    <p>Gracias por completar el formulario. Voy a revisar tus respuestas y me pondré en contacto a la brevedad.</p>
+  </div>
+
+</div>
+
+<script>
+  // Interactividad choice items
+  document.querySelectorAll('.choice-group').forEach(function(group) {
+    group.querySelectorAll('.choice-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var input = item.querySelector('input');
+        if (input.type === 'radio') {
+          group.querySelectorAll('.choice-item').forEach(function(i) { i.classList.remove('selected'); });
+          item.classList.add('selected');
+        } else {
+          item.classList.toggle('selected', input.checked);
+        }
+      });
+    });
+  });
+
+  // Escala SEO
+  var seoVal = 0;
+  var seoWrap = document.getElementById('seo-scale');
+  for (var i = 1; i <= 5; i++) {
+    (function(n) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'scale-btn';
+      btn.textContent = n;
+      btn.setAttribute('aria-label', 'Puntaje ' + n);
+      btn.onclick = function() {
+        seoVal = n;
+        seoWrap.querySelectorAll('.scale-btn').forEach(function(b, idx) {
+          b.classList.toggle('active', idx < n);
+        });
+      };
+      seoWrap.appendChild(btn);
+    })(i);
+  }
+
+  // ─────────────────────────────────────────────
+  // FORMSPREE: reemplazá la URL con tu endpoint
+  // ─────────────────────────────────────────────
+  var FORMSPREE_URL = 'https://formspree.io/f/xjgdnjzb';
+
+  function recolectarDatos() {
+    var datos = {};
+
+    // Campos de texto
+    datos['Nombre']        = document.getElementById('nombre').value.trim();
+    datos['Email']         = document.getElementById('email').value.trim();
+    datos['Especialidad']  = document.getElementById('especialidad').value.trim();
+    datos['Ciudad']        = document.getElementById('ciudad').value.trim();
+    datos['Cliente ideal'] = document.getElementById('cliente').value.trim();
+    datos['Referencia web']= document.getElementById('referencia').value.trim();
+    datos['Redes sociales']= document.getElementById('redes').value.trim();
+    datos['Comentarios']   = document.getElementById('comentarios').value.trim();
+
+    // Checkboxes — junta los seleccionados con coma
+    var labelObjetivo = {
+      captar: 'Captar nuevos clientes',
+      presencia: 'Presencia online profesional',
+      info: 'Informar sobre servicios',
+      contacto: 'Facilitar contacto con clientes',
+      otro: 'Otro'
+    };
+    var objetivosSelec = Array.from(document.querySelectorAll('#objetivo input:checked'))
+      .map(function(i){ return labelObjetivo[i.value] || i.value; });
+    datos['Objetivos del sitio'] = objetivosSelec.join(', ') || '—';
+
+    var labelEstilo = {
+      minimalista: 'Minimalista y formal',
+      moderno: 'Moderno y tecnológico',
+      clasico: 'Clásico y elegante',
+      cercano: 'Cercano y humano'
+    };
+    var estilosSelec = Array.from(document.querySelectorAll('#estilo input:checked'))
+      .map(function(i){ return labelEstilo[i.value] || i.value; });
+    datos['Estilo visual'] = estilosSelec.join(', ') || '—';
+
+    var labelSec = {
+      inicio: 'Inicio / presentación',
+      servicios: 'Servicios / áreas de práctica',
+      sobremi: 'Sobre mí / trayectoria',
+      blog: 'Blog o artículos',
+      turnos: 'Solicitud de turnos',
+      faq: 'Preguntas frecuentes',
+      testimonios: 'Testimonios',
+      contacto: 'Contacto'
+    };
+    var seccionesSelec = Array.from(document.querySelectorAll('#secciones input:checked'))
+      .map(function(i){ return labelSec[i.value] || i.value; });
+    datos['Secciones del sitio'] = seccionesSelec.join(', ') || '—';
+
+    // Radios
+    var radioMap = {
+      logo:      { si: 'Sí, tiene logo', proceso: 'Lo está desarrollando', no: 'No tiene logo' },
+      identidad: { si: 'Identidad visual definida', parcial: 'Tiene referencias', no: 'Sin identidad definida' },
+      agenda:    { si: 'Sí, quiere agenda online', evaluar: 'Podría evaluarlo', no: 'No quiere agenda' },
+      alcance:   { local: 'Local / ciudad', regional: 'Regional / provincial', nacional: 'Nacional', internacional: 'Internacional' },
+      dominio:   { si: 'Sí tiene dominio', no: 'No, necesita orientación', nosabe: 'No sabe qué es' }
+    };
+    for (var radio in radioMap) {
+      var checked = document.querySelector('input[name="' + radio + '"]:checked');
+      var labelKey = { logo: 'Logo', identidad: 'Identidad visual', agenda: 'Agenda online', alcance: 'Alcance geográfico', dominio: 'Dominio / hosting' };
+      datos[labelKey[radio]] = checked ? (radioMap[radio][checked.value] || checked.value) : '—';
+    }
+
+    // Escala SEO
+    datos['Importancia SEO (1-5)'] = seoVal > 0 ? seoVal.toString() : '—';
+
+    return datos;
+  }
+
+  function enviar() {
+    var nombre      = document.getElementById('nombre').value.trim();
+    var email       = document.getElementById('email').value.trim();
+    var especialidad= document.getElementById('especialidad').value.trim();
+    var objetivos   = document.querySelectorAll('#objetivo input:checked').length;
+    var secciones   = document.querySelectorAll('#secciones input:checked').length;
+
+    if (!nombre || !email || !especialidad) {
+      alert('Por favor completá los campos obligatorios: nombre, especialidad y email.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('El email no parece válido. Por favor revisalo.');
+      return;
+    }
+    if (objetivos === 0) {
+      alert('Por favor seleccioná al menos un objetivo para el sitio.');
+      return;
+    }
+    if (secciones === 0) {
+      alert('Por favor seleccioná al menos una sección para el sitio.');
+      return;
+    }
+
+    var btn = document.getElementById('btn-enviar');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    var datos = recolectarDatos();
+
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(datos)
+    })
+    .then(function(res) {
+      if (res.ok) {
+        var success = document.getElementById('success');
+        success.style.display = 'block';
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        btn.textContent = 'Formulario enviado ✓';
+      } else {
+        throw new Error('Error en el envío');
+      }
+    })
+    .catch(function() {
+      alert('Hubo un problema al enviar. Por favor intentá de nuevo o escribime directamente.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar formulario';
+    });
+  }
+</script>
+</body>
+</html>
